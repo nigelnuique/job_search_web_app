@@ -1,0 +1,123 @@
+{% extends "base2.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .category-section {
+        margin-bottom: 40px;
+    }
+    .job-card {
+        margin-bottom: 20px;
+        border: 1px solid #dee2e6;
+        border-radius: 0.25rem;
+        padding: 15px;
+        background-color: #ffffff;
+    }
+    .job-card h3 {
+        margin-bottom: 10px;
+    }
+    .job-card p {
+        color: #6c757d;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="text-center">Featured Jobs</h1>
+            <hr>
+            <div id="content">
+
+                <div class="category-section">
+                    <h2 class="text-primary">Engineering</h2>
+                    <div id="category-engineering" class="row">
+                        <div class="col-md-6 job-card">
+                            <h3><a id="link-1" href="#"></a></h3>
+                            <p id="data-embed-1"></p>
+                        </div>
+                        <div class="col-md-6 job-card">
+                            <h3><a id="link-2" href="#"></a></h3>
+                            <p id="data-embed-2"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="category-section">
+                    <h2 class="text-primary">Finance</h2>
+                    <div id="category-finance" class="row">
+                        <div class="col-md-6 job-card">
+                            <h3><a id="link-3" href="#"></a></h3>
+                            <p id="data-embed-3"></p>
+                        </div>
+                        <div class="col-md-6 job-card">
+                            <h3><a id="link-4" href="#"></a></h3>
+                            <p id="data-embed-4"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="category-section">
+                    <h2 class="text-primary">Healthcare</h2>
+                    <div id="category-healthcare" class="row">
+                        <div class="col-md-6 job-card">
+                            <h3><a id="link-5" href="#"></a></h3>
+                            <p id="data-embed-5"></p>
+                        </div>
+                        <div class="col-md-6 job-card">
+                            <h3><a id="link-6" href="#"></a></h3>
+                            <p id="data-embed-6"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="category-section">
+                    <h2 class="text-primary">Sales</h2>
+                    <div id="category-sales" class="row">
+                        <div class="col-md-6 job-card">
+                            <h3><a id="link-7" href="#"></a></h3>
+                            <p id="data-embed-7"></p>
+                        </div>
+                        <div class="col-md-6 job-card">
+                            <h3><a id="link-8" href="#"></a></h3>
+                            <p id="data-embed-8"></p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var latestJobs = {{ latest_jobs|tojson }};
+        var jobIndex = 1;
+
+        $.each(latestJobs, function(category, jobs) {
+            $.each(jobs, function(i, jobUrl) {
+                $.get(jobUrl, function(data) {
+                    var shortened = $(data).find('#data-content').text().substring(0, 400);
+                    var title = $(data).find('#data-title').text();
+
+                    // Embed data into the homepage
+                    $("#data-embed-" + jobIndex).text(shortened + '...');
+                    $("#link-" + jobIndex).text(title);
+                    $("#link-" + jobIndex).attr("href", jobUrl);
+
+                    jobIndex++;
+                });
+            });
+        });
+    });
+</script>
+{% endblock %}

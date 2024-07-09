@@ -1,0 +1,48 @@
+{% extends "base2.html" %}
+
+{% block links %}
+<a href="/login" class="btn btn-outline-danger">Login</a>
+{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .error-container {
+        margin-top: 50px;
+        text-align: center;
+    }
+    .error-code {
+        font-size: 6rem;
+        font-weight: bold;
+        color: #343a40;
+    }
+    .error-message {
+        font-size: 1.5rem;
+        color: #6c757d;
+    }
+    .error-suggestion {
+        font-size: 1.2rem;
+        color: #007bff;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container error-container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="error-code">500</div>
+            <div class="error-message">Oops! Something went wrong on our end.</div>
+            <div class="error-suggestion">
+                <p>You may want to <a href="/">return to the homepage</a>.</p>
+                <p>
+                    <a class="btn btn-primary btn-sm" href="/" role="button">Go to Homepage</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends "base2.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .job-card {
+        margin-bottom: 20px;
+    }
+    .job-card h5 {
+        margin-bottom: 10px;
+    }
+    .job-card p {
+        color: #6c757d;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div id="main">
+        <div id="content">
+            <div id="category">
+                <h2 class="text-center">Healthcare Jobs</h2>
+                <hr>
+                <div id="job-list" class="row"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{{ url_for('static', filename='jquery-3.6.0.js') }}"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var jobList = {{ job_urls_json|safe }};
+        var jobListElement = $("#job-list");
+
+        // Log the job URLs to the console for debugging
+        console.log("Job URLs: ", jobList);
+        
+        $.each(jobList, function (i, jobUrl) {
+            console.log("Processing job URL: ", jobUrl); // Log each job URL for debugging
+
+            $.get(jobUrl, function (jobData) {
+                var shortened = $(jobData).find('#data-content').text().substring(0, 400);
+                var title = $(jobData).find('#data-title').text();
+                
+                var jobDiv = $('<div class="col-md-6 job-card">');
+                var cardDiv = $('<div class="card">');
+                var cardBody = $('<div class="card-body">');
+                var linkElement = $('<a>');
+                linkElement.text(title);
+                linkElement.attr('href', jobUrl);
+                linkElement.addClass('card-title h5');
+
+                var dataEmbedElement = $('<p>');
+                dataEmbedElement.attr('id', 'data-embed-' + (i + 1));
+                dataEmbedElement.text(shortened + '...');
+                dataEmbedElement.addClass('card-text');
+
+                cardBody.append(linkElement);
+                cardBody.append(dataEmbedElement);
+                cardDiv.append(cardBody);
+                jobDiv.append(cardDiv);
+                
+                jobListElement.append(jobDiv);
+            });
+        });
+    });
+</script>
+{% endblock %}
