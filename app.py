@@ -131,4 +131,5 @@ def get_all_jobs_in_category(category):
     return job_urls
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
